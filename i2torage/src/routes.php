@@ -49,5 +49,27 @@ return function (App $app) {
         //     echo $image;
 
         //});
+
+        $app->delete('/image',function ($req, $res, $args) {
+            $data = json_decode($req->getBody());
+            
+            $img_name = $data->imgname;
+                
+            $path_file = "./image/" . $img_name;
+    
+            if (file_exists($path_file)) { 
+                $deleted = unlink($path_file);
+
+                return $res
+                ->withHeader('Content-type', 'application/json')
+                ->write(
+                    json_encode($img_name)
+                );
+            } 
+
+            return $res->write("false");
+
+        });
+    
     });
 };
